@@ -31,7 +31,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/api', api.index);
-app.post('/api/palette/:numcolors', api.palette);
+app.post('/api/palette', api.palette);
 
 
 http.createServer(app).listen(app.get('port'), function(){

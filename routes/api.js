@@ -3,14 +3,17 @@ var colorthief = require('color-thief')
   , tmp = require('tmp')
   , fs = require('fs');
 
-epxorts.index = function(req, res) {
+exports.index = function(req, res) {
   res.render('index');
 };
 
 exports.palette = function(req, res) {
+  console.log(req.headers);
+  console.log(req.files);
   var tempPath = req.files.file.path;
   var extname = path.extname(req.files.file.name);
   var targetPath;
+  var palette;
 
   if (extname.toLowerCase() === '.png' || extname === '.jpg' ) {
     // create tmp file
@@ -18,18 +21,19 @@ exports.palette = function(req, res) {
       mode: 0644,
       prefix: 'tmpimg-',
       postfix: extname
-    }, function _tempFileCreated(err, path, fd) {
+    }, function _tempFileCreated(err, tmpath, fd) {
       if (err) throw err;
 
       //set target path for uploaded file
-      targetPath = path.join('./upload', path);
+      targetPath = path.join('./upload', path.basename(tmpath));
       fs.rename(tempPath, targetPath, function(err) {
         if (err) throw err;
         console.log("Upload Complete!");
         //TODO: this should end here in a promised,
         //but for now we'll just get it done
-
-      });
+        palette = colorthief.getPalette(targetPath, 10);
+        res.json(palette);
+     });
 
       console.log("tmp file: ", path);
       console.log("Filedescriptor: ", fd);
@@ -39,6 +43,6 @@ exports.palette = function(req, res) {
       res.send(console.log("Only jpgs and pngs are allowed!"));
     });
   }
-
+  //res.json(palette);
 
 }
