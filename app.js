@@ -30,6 +30,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/demo', routes.demo);
 app.get('/api', api.index);
 app.post('/api/palette', api.palette);
 
