@@ -8,8 +8,8 @@ exports.index = function(req, res) {
 };
 
 exports.palette = function(req, res) {
-  console.log(req.headers);
-  console.log(req.files);
+  //console.log(req.headers);
+  //console.log(req.files);
   var tempPath = req.files.file.path;
   var extname = path.extname(req.files.file.name);
   var targetPath;
@@ -26,17 +26,16 @@ exports.palette = function(req, res) {
 
       //set target path for uploaded file
       targetPath = path.join('./upload', path.basename(tmpath));
+
       fs.rename(tempPath, targetPath, function(err) {
         if (err) throw err;
         console.log("Upload Complete!");
+        //
         //TODO: this should end here in a promised,
         //but for now we'll just get it done
-        palette = colorthief.getPalette(targetPath, 10);
+          palette = colorthief.getPalette(targetPath, 10, 7);
         res.json(palette);
      });
-
-      console.log("tmp file: ", path);
-      console.log("Filedescriptor: ", fd);
     });
   } else {
     fs.unlink(tempPath, function() {
