@@ -2,7 +2,9 @@ doctype 5
 html
   head
     title= title
-    link(rel='stylesheet', href='/css/style.css')
-    script(src='http://localhost:35729/livereload.js')
+    link(rel='stylesheet', href='/css/dropzone.css')
+    link(rel='stylesheet', href='/css/app.css')
+    block customscripts
   body
     block content
+    block nonblocking 
